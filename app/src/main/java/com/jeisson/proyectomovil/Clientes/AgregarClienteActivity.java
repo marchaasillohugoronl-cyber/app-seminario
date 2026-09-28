@@ -1,6 +1,8 @@
 package com.jeisson.proyectomovil.Clientes;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,8 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
-import com.jeisson.proyectomovil.UserProfile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -17,11 +19,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.jeisson.proyectomovil.R;
+
 import com.jeisson.proyectomovil.PantallaActivity;
+import com.jeisson.proyectomovil.R;
+import com.jeisson.proyectomovil.UserProfile;
 import com.jeisson.proyectomovil.clases.Cliente;
 
 public class AgregarClienteActivity extends PantallaActivity {
+
+    // =========================================================
+    // EDITTEXT
+    // =========================================================
 
     private EditText etnombrecli;
     private EditText etapellidoscli;
@@ -30,49 +38,170 @@ public class AgregarClienteActivity extends PantallaActivity {
     private EditText ettelefonocli;
     private EditText etdireccioncli;
 
+    // =========================================================
+    // TEXTVIEW
+    // =========================================================
+
     private TextView tvNombreUsuario;
 
+    // =========================================================
+    // BOTÓN
+    // =========================================================
+
     private Button btnGuardarCliente;
+
+    // =========================================================
+    // FIREBASE
+    // =========================================================
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usuariosRef;
 
+    // =========================================================
+    // MODO EDICIÓN
+    // =========================================================
+
+    private String idClienteEdit = null;
+
+    private boolean esModoEdicion = false;
+
+    // =========================================================
+    // ON CREATE
+    // =========================================================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
-        mostrarPantalla(R.layout.activity_agregar_cliente);
+        mostrarPantalla(
+                R.layout.activity_agregar_cliente
+        );
 
-        // Inicializar elementos
-        tvNombreUsuario = findViewById(R.id.tvNombreUsuario);
+        // =====================================================
+        // INICIALIZAR ELEMENTOS
+        // =====================================================
 
-        etnombrecli = findViewById(R.id.etnombrecli);
-        etapellidoscli = findViewById(R.id.etapellidoscli);
-        etdnicli = findViewById(R.id.etdnicli);
-        etcorreocli = findViewById(R.id.etcorreocli);
-        ettelefonocli = findViewById(R.id.ettelefonocli);
-        etdireccioncli = findViewById(R.id.etdireccioncli);
+        tvNombreUsuario =
+                findViewById(
+                        R.id.tvNombreUsuario
+                );
 
-        btnGuardarCliente = findViewById(R.id.btnGuardarCliente);
+        etnombrecli =
+                findViewById(
+                        R.id.etnombrecli
+                );
 
-        // Firebase
-        firebaseAuth = FirebaseAuth.getInstance();
+        etapellidoscli =
+                findViewById(
+                        R.id.etapellidoscli
+                );
 
-        usuariosRef = FirebaseDatabase.getInstance()
-                .getReference(UserProfile.PATH);
+        etdnicli =
+                findViewById(
+                        R.id.etdnicli
+                );
 
-        // Cargar nombre del usuario
+        etcorreocli =
+                findViewById(
+                        R.id.etcorreocli
+                );
+
+        ettelefonocli =
+                findViewById(
+                        R.id.ettelefonocli
+                );
+
+        etdireccioncli =
+                findViewById(
+                        R.id.etdireccioncli
+                );
+
+        btnGuardarCliente =
+                findViewById(
+                        R.id.btnGuardarCliente
+                );
+
+        // =====================================================
+        // FIREBASE
+        // =====================================================
+
+        firebaseAuth =
+                FirebaseAuth.getInstance();
+
+        usuariosRef =
+                FirebaseDatabase.getInstance()
+                        .getReference(
+                                UserProfile.PATH
+                        );
+
+        // =====================================================
+        // CARGAR NOMBRE DEL USUARIO
+        // =====================================================
+
         cargarNombreUsuario();
 
-        // Guardar cliente
+        // =====================================================
+        // COMPROBAR SI ES NUEVO O EDICIÓN
+        // =====================================================
+
+        comprobarModoEdicion();
+
+        // =====================================================
+        // BOTÓN GUARDAR / ACTUALIZAR
+        // =====================================================
+
         btnGuardarCliente.setOnClickListener(
                 view -> guardarCliente()
         );
     }
 
+    // =========================================================
+    // COMPROBAR MODO EDICIÓN
+    // =========================================================
+
+    private void comprobarModoEdicion() {
+
+        if (getIntent() != null
+                && getIntent().hasExtra("id_cliente")) {
+
+            idClienteEdit =
+                    getIntent().getStringExtra(
+                            "id_cliente"
+                    );
+
+            if (idClienteEdit != null
+                    && !idClienteEdit.trim().isEmpty()) {
+
+                esModoEdicion = true;
+
+                // =================================================
+                // CAMBIAR TEXTO DEL BOTÓN
+                // =================================================
+
+                btnGuardarCliente.setText(
+                        "Actualizar Cliente"
+                );
+
+                // =================================================
+                // CARGAR DATOS
+                // =================================================
+
+                cargarDatosDelCliente(
+                        idClienteEdit
+                );
+            }
+        }
+    }
+
+    // =========================================================
+    // CARGAR NOMBRE DEL USUARIO
+    // =========================================================
+
     private void cargarNombreUsuario() {
 
-        FirebaseUser usuario = firebaseAuth.getCurrentUser();
+        FirebaseUser usuario =
+                firebaseAuth.getCurrentUser();
 
         if (usuario == null) {
 
@@ -83,9 +212,11 @@ public class AgregarClienteActivity extends PantallaActivity {
             return;
         }
 
-        String uid = usuario.getUid();
+        String uid =
+                usuario.getUid();
 
-        usuariosRef.child(uid)
+        usuariosRef
+                .child(uid)
                 .addListenerForSingleValueEvent(
                         new ValueEventListener() {
 
@@ -97,11 +228,15 @@ public class AgregarClienteActivity extends PantallaActivity {
 
                                     String nombres =
                                             snapshot.child("nombres")
-                                                    .getValue(String.class);
+                                                    .getValue(
+                                                            String.class
+                                                    );
 
                                     String apellidos =
                                             snapshot.child("apellidos")
-                                                    .getValue(String.class);
+                                                    .getValue(
+                                                            String.class
+                                                    );
 
                                     if (nombres == null) {
                                         nombres = "";
@@ -112,12 +247,17 @@ public class AgregarClienteActivity extends PantallaActivity {
                                     }
 
                                     String nombreCompleto =
-                                            (nombres + " " + apellidos).trim();
+                                            (
+                                                    nombres
+                                                            + " "
+                                                            + apellidos
+                                            ).trim();
 
                                     if (!nombreCompleto.isEmpty()) {
 
                                         tvNombreUsuario.setText(
-                                                "Usuario: " + nombreCompleto
+                                                "Usuario: "
+                                                        + nombreCompleto
                                         );
 
                                     } else {
@@ -155,10 +295,161 @@ public class AgregarClienteActivity extends PantallaActivity {
     }
 
     // =========================================================
-    // GUARDAR CLIENTE
+    // CARGAR DATOS DEL CLIENTE PARA MODIFICAR
+    // =========================================================
+
+    private void cargarDatosDelCliente(
+            String idCliente) {
+
+        // =====================================================
+        // USUARIO AUTENTICADO
+        // =====================================================
+
+        FirebaseUser usuario =
+                firebaseAuth.getCurrentUser();
+
+        if (usuario == null) {
+
+            Toast.makeText(
+                    this,
+                    "No hay un usuario autenticado",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            return;
+        }
+
+        String uid =
+                usuario.getUid();
+
+        // =====================================================
+        // REFERENCIA:
+        //
+        // usuarios/{uid}/clientes/{idCliente}
+        // =====================================================
+
+        DatabaseReference clienteRef =
+                FirebaseDatabase.getInstance()
+                        .getReference("usuarios")
+                        .child(uid)
+                        .child("clientes")
+                        .child(idCliente);
+
+        // =====================================================
+        // LEER CLIENTE
+        // =====================================================
+
+        clienteRef.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(
+                            @NonNull DataSnapshot snapshot) {
+
+                        if (!snapshot.exists()) {
+
+                            Toast.makeText(
+                                    AgregarClienteActivity.this,
+                                    "No se encontró el cliente",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+
+                            return;
+                        }
+
+                        try {
+
+                            Cliente cliente =
+                                    snapshot.getValue(
+                                            Cliente.class
+                                    );
+
+                            if (cliente == null) {
+
+                                Toast.makeText(
+                                        AgregarClienteActivity.this,
+                                        "No se pudieron cargar los datos",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+
+                                return;
+                            }
+
+                            // =================================================
+                            // AUTOCOMPLETAR CAMPOS
+                            // =================================================
+
+                            etnombrecli.setText(
+                                    cliente.getNombres() != null
+                                            ? cliente.getNombres()
+                                            : ""
+                            );
+
+                            etapellidoscli.setText(
+                                    cliente.getApellidos() != null
+                                            ? cliente.getApellidos()
+                                            : ""
+                            );
+
+                            etdnicli.setText(
+                                    cliente.getDni() != null
+                                            ? cliente.getDni()
+                                            : ""
+                            );
+
+                            etcorreocli.setText(
+                                    cliente.getCorreo() != null
+                                            ? cliente.getCorreo()
+                                            : ""
+                            );
+
+                            ettelefonocli.setText(
+                                    cliente.getTelefono() != null
+                                            ? cliente.getTelefono()
+                                            : ""
+                            );
+
+                            etdireccioncli.setText(
+                                    cliente.getDireccion() != null
+                                            ? cliente.getDireccion()
+                                            : ""
+                            );
+
+                        } catch (Exception e) {
+
+                            Toast.makeText(
+                                    AgregarClienteActivity.this,
+                                    "Error al cargar cliente: "
+                                            + e.getMessage(),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(
+                            @NonNull DatabaseError error) {
+
+                        Toast.makeText(
+                                AgregarClienteActivity.this,
+                                "Error al cargar datos: "
+                                        + error.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                }
+        );
+    }
+
+    // =========================================================
+    // GUARDAR / ACTUALIZAR CLIENTE
     // =========================================================
 
     private void guardarCliente() {
+
+        // =====================================================
+        // OBTENER DATOS
+        // =====================================================
 
         String nombres =
                 etnombrecli.getText()
@@ -201,6 +492,7 @@ public class AgregarClienteActivity extends PantallaActivity {
             );
 
             etnombrecli.requestFocus();
+
             return;
         }
 
@@ -211,6 +503,7 @@ public class AgregarClienteActivity extends PantallaActivity {
             );
 
             etapellidoscli.requestFocus();
+
             return;
         }
 
@@ -221,6 +514,7 @@ public class AgregarClienteActivity extends PantallaActivity {
             );
 
             etdnicli.requestFocus();
+
             return;
         }
 
@@ -231,6 +525,7 @@ public class AgregarClienteActivity extends PantallaActivity {
             );
 
             etdnicli.requestFocus();
+
             return;
         }
 
@@ -241,6 +536,7 @@ public class AgregarClienteActivity extends PantallaActivity {
             );
 
             etcorreocli.requestFocus();
+
             return;
         }
 
@@ -251,6 +547,7 @@ public class AgregarClienteActivity extends PantallaActivity {
             );
 
             ettelefonocli.requestFocus();
+
             return;
         }
 
@@ -261,6 +558,7 @@ public class AgregarClienteActivity extends PantallaActivity {
             );
 
             etdireccioncli.requestFocus();
+
             return;
         }
 
@@ -282,48 +580,84 @@ public class AgregarClienteActivity extends PantallaActivity {
             return;
         }
 
-        String uid = usuario.getUid();
+        String uid =
+                usuario.getUid();
 
         // =====================================================
-        // REFERENCIA A:
+        // REFERENCIA:
         //
         // usuarios/{uid}/clientes
         // =====================================================
 
-        DatabaseReference clientesRef =
+        DatabaseReference misClientesRef =
                 FirebaseDatabase.getInstance()
                         .getReference("usuarios")
                         .child(uid)
                         .child("clientes");
 
         // =====================================================
-        // GENERAR ID
+        // DETERMINAR ID
         // =====================================================
 
-        String key = clientesRef.push().getKey();
+        String idCliente;
 
-        if (key == null) {
+        // =====================================================
+        // MODO EDICIÓN
+        // =====================================================
 
-            Toast.makeText(
-                    this,
-                    "No se pudo generar el ID del cliente",
-                    Toast.LENGTH_SHORT
-            ).show();
+        if (esModoEdicion) {
 
-            return;
+            idCliente =
+                    idClienteEdit;
+
+            if (idCliente == null
+                    || idCliente.trim().isEmpty()) {
+
+                Toast.makeText(
+                        this,
+                        "No se encontró el ID del cliente",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                return;
+            }
+
         }
 
         // =====================================================
-        // ID VISIBLE DEL CLIENTE
+        // MODO NUEVO CLIENTE
         // =====================================================
 
-        String idCliente =
-                "CLI-" + key.substring(
-                        Math.max(0, key.length() - 6)
-                );
+        else {
+
+            String key =
+                    misClientesRef
+                            .push()
+                            .getKey();
+
+            if (key == null) {
+
+                Toast.makeText(
+                        this,
+                        "No se pudo generar el ID del cliente",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                return;
+            }
+
+            idCliente =
+                    "CLI-"
+                            + key.substring(
+                            Math.max(
+                                    0,
+                                    key.length() - 6
+                            )
+                    );
+        }
 
         // =====================================================
-        // CREAR CLIENTE
+        // CREAR OBJETO CLIENTE
         // =====================================================
 
         Cliente cliente =
@@ -339,32 +673,132 @@ public class AgregarClienteActivity extends PantallaActivity {
                 );
 
         // =====================================================
-        // GUARDAR EN:
+        // GUARDAR EN FIREBASE
         //
-        // usuarios/{uid}/clientes/{idCliente}
+        // Si es nuevo:
+        // crea el cliente.
+        //
+        // Si es edición:
+        // reemplaza los datos del mismo cliente.
         // =====================================================
 
-        clientesRef
+        misClientesRef
                 .child(idCliente)
                 .setValue(cliente)
-                .addOnSuccessListener(unused -> {
 
-                    Toast.makeText(
-                            AgregarClienteActivity.this,
-                            "Cliente guardado correctamente",
-                            Toast.LENGTH_SHORT
-                    ).show();
+                .addOnSuccessListener(
+                        unused -> {
 
+                            String mensajeNombre =
+                                    (
+                                            nombres
+                                                    + " "
+                                                    + apellidos
+                                    ).trim();
+
+                            mostrarAvisoGuardado(
+                                    mensajeNombre
+                            );
+                        }
+                )
+
+                .addOnFailureListener(
+                        e -> {
+
+                            Toast.makeText(
+                                    AgregarClienteActivity.this,
+                                    "Error al guardar: "
+                                            + e.getMessage(),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                );
+    }
+
+    // =========================================================
+    // AVISO PERSONALIZADO
+    // =========================================================
+
+    private void mostrarAvisoGuardado(
+            String nombreCliente) {
+
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(this);
+
+        // =====================================================
+        // TÍTULO
+        // =====================================================
+
+        if (esModoEdicion) {
+
+            builder.setTitle(
+                    "Cliente actualizado"
+            );
+
+        } else {
+
+            builder.setTitle(
+                    "Cliente guardado"
+            );
+        }
+
+        // =====================================================
+        // MENSAJE
+        // =====================================================
+
+        if (esModoEdicion) {
+
+            builder.setMessage(
+                    "Los datos de "
+                            + nombreCliente
+                            + " se actualizaron correctamente.\n\n"
+
+            );
+
+        } else {
+
+            builder.setMessage(
+                    "¡Hola! Los datos de "
+                            + nombreCliente
+                            + " se guardaron correctamente.\n\n"
+
+            );
+        }
+
+        // =====================================================
+        // NO CERRAR TOCANDO AFUERA
+        // =====================================================
+
+        builder.setCancelable(false);
+
+        // =====================================================
+        // CREAR ALERT
+        // =====================================================
+
+        final AlertDialog alerta =
+                builder.create();
+
+        alerta.show();
+
+        // =====================================================
+        // CERRAR DESPUÉS DE 3 SEGUNDOS
+        // =====================================================
+
+        new Handler(
+                Looper.getMainLooper()
+        ).postDelayed(
+                () -> {
+
+                    if (alerta.isShowing()) {
+
+                        alerta.dismiss();
+                    }
+
+                    // Regresar a ListaClienteActivity
                     finish();
-                })
-                .addOnFailureListener(e -> {
 
-                    Toast.makeText(
-                            AgregarClienteActivity.this,
-                            "Error al guardar: "
-                                    + e.getMessage(),
-                            Toast.LENGTH_LONG
-                    ).show();
-                });
+                },
+                3000
+        );
     }
 }
