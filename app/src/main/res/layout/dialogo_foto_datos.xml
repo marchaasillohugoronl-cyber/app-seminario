@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/elegir_imagen"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginTop="20dp">
+
+        <!-- GALERÍA -->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivGaleria"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/galeria"
+                android:layout_gravity="center"
+                android:contentDescription="@string/galeria" />
+
+            <Button
+                android:id="@+id/btnelegirgaleriadialog"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="@string/galeria"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp" />
+
+        </LinearLayout>
+
+        <!-- CÁMARA -->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivCamara"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/camara"
+                android:layout_gravity="center"
+                android:contentDescription="@string/camara" />
+
+            <Button
+                android:id="@+id/btncamaradialog"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="@string/camara"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

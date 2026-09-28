@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "742533950914",
+    "firebase_url": "https://proyectomovil-f6931-default-rtdb.firebaseio.com",
+    "project_id": "proyectomovil-f6931",
+    "storage_bucket": "proyectomovil-f6931.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742533950914:android:2ba9e1f672dff50f35fa5b",
+        "android_client_info": {
+          "package_name": "com.jeisson.proyectomovil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUZkC-NDiWQ-1QDkKQgXii9838Dt0aA44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742533950914:android:2886ca03da12f42235fa5b",
+        "android_client_info": {
+          "package_name": "com.yesusid.sem1_gestion502"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUZkC-NDiWQ-1QDkKQgXii9838Dt0aA44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

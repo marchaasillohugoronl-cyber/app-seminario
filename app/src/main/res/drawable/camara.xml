@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Cuerpo principal de la cámara -->
+    <path
+        android:fillColor="#0B0A0A"
+        android:pathData="M8,14
+            L17,14
+            L20,10
+            L28,10
+            L31,14
+            L40,14
+            C42.8,14 45,16.2 45,19
+            L45,35
+            C45,37.8 42.8,40 40,40
+            L8,40
+            C5.2,40 3,37.8 3,35
+            L3,19
+            C3,16.2 5.2,14 8,14Z" />
+
+    <!-- Parte superior / botón de disparo -->
+    <path
+        android:fillColor="#9C27B0"
+        android:pathData="M17,12
+            L21,8
+            L27,8
+            L31,12
+            Z" />
+
+    <!-- Anillo exterior del lente -->
+    <path
+        android:fillColor="#1976D2"
+        android:pathData="M24,16
+            A10,10 0,1 0,24,36
+            A10,10 0,1 0,24,16Z" />
+
+    <!-- Anillo interior del lente -->
+    <path
+        android:fillColor="#0D47A1"
+        android:pathData="M24,19
+            A7,7 0,1 0,24,33
+            A7,7 0,1 0,24,19Z" />
+
+    <!-- Cristal del lente -->
+    <path
+        android:fillColor="#42A5F5"
+        android:pathData="M24,21
+            A5,5 0,1 0,24,31
+            A5,5 0,1 0,24,21Z" />
+
+    <!-- Reflejo del lente -->
+    <path
+        android:fillColor="#9C27B0"
+        android:fillAlpha="0.85"
+        android:pathData="M21,23
+            A2,2 0,0 1,23,21
+            L26,21
+            L22,25
+            A2,2 0,0 1,21,23Z" />
+
+    <!-- Flash -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M36,17
+            A2.5,2.5 0,1 0,36,22
+            A2.5,2.5 0,1 0,36,17Z" />
+
+    <!-- Pequeño indicador -->
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M10,17
+            A1.5,1.5 0,1 0,10,20
+            A1.5,1.5 0,1 0,10,17Z" />
+
+</vector>

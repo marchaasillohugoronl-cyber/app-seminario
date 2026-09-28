@@ -1,0 +1,84 @@
+<resources>
+
+    <!-- CREDENCIALES APLICATIVO -->
+    <string name="app_name">ProyectoMovil</string>
+    <string name="developer">Ricardo Aquino</string>
+    <string name="desarrollo">Desarrollado por: </string>
+    <string name="version">1.0.0</string>
+    <string name="telef">Telefono: 999666555 </string>
+    <string name="descripcion_dev">
+    Soy un programador con las siguientes habilidades y cualidades:
+    Poseo habilidades comunicativas.
+    Habilidad para trabajar en equipo y evitar conflictos.
+    Soy lógico y analítico.
+    Creativo y ocurrente.
+    Ser organizado y poder planificar tareas y utilizar eficientemente mi tiempo.
+    Poseo la capacidad de planear, diseñar, evaluar, controlar, instalar, integrar,
+    construir, operar, administrar, y mantener sistemas que contemplen los sistemas
+    de software y todo lo relacionado con el ambiente computacional,
+    buscando el óptimo aprovechamiento.
+    </string>
+
+
+    <!-- LOGIN -->
+    <string name="titulo_login">Iniciar Sesion</string>
+    <string name="lbl_usuario">Usuario</string>
+    <string name="txt_usuario">Ingrese Usuario</string>
+    <string name="lbl_password">Contraseña</string>
+    <string name="txt_password">Ingrese Contraseña</string>
+    <string name="btn_ingresar">Ingresar</string>
+    <string name="lbl_crear_cuenta">No tienes cuenta?, Rregistrate</string>
+
+    <!-- REGISTRO -->
+    <string name="titulo_registro">Registrar Usuario</string>
+    <string name="lbl_nombres">Nombre</string>
+    <string name="txt_nombres">Ingrese Nombre</string>
+    <string name="lbl_apellidos">Apellidos</string>
+    <string name="txt_apellidos">Ingrese apellido</string>
+    <string name="lbl_correo">Ingrese correo</string>
+    <string name="txt_correo">Correo</string>
+    <string name="lbl_password1">Contraseña</string>
+    <string name="txt_password1">Nombre</string>
+    <string name="lbl_confirmar_password1">Confirmar contraseña</string>
+    //De mas
+    <string name="txt_confirmar_password1">Ingresar contraseña</string>
+    //De mas
+    <string name="btn_registrar">Registrar Usuario</string>
+    <string name="lbl_backlogin">Volver a Ingreso</string>
+    //lbl_ir_login
+    <string name="txt_registrado">Bienvenidos al sistema</string>
+
+    <!-- Dashboard -->
+    <string name="bienvenido">Bienbenido</string>
+    <string name="empresa">Empresa</string>
+    <string name="gastos">Gastos</string>
+    <string name="lista_tareas">Lista tareas</string>
+    <string name="tareas">Tareas</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="mis_datos">Mis datos</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <!--mis datos-->
+    <string name="correo_md">Correo_usuario</string>
+    <string name="codigo_md">Codigo Usuario</string>
+    <string name="titulo_md">Mis Datos</string>
+    <string name="datos_md">Datos:</string>
+    <string name="leyenda_md">Todos los campos son requeridos: Nombre, Apellidos, Teléfono</string>
+    <string name="nombre_md">Nombres</string>
+    <string name="apellido_md">apellidos</string>
+    <string name="fecha_nacimiento">Fecha Nacimiento</string>
+    <string name="edad_md">Edad</string>
+    <string name="telefono_md">Telefono</string>
+    <string name="domicilio_md">Domicilio</string>
+    <string name="tiktok_md">Tiktok</string>
+    <string name="profesion_md">Profesión</string>
+    <!--EDITAR-FOTO-->
+    <string name="elegir_imagen">Elegir Imagen desde la galería</string>
+    <string name="actualizar_foto">Actualizar Foto</string>
+    <string name="galeria">Galeria</string>
+    <string name="camara">Camara</string>
+    <string name="seleccionar">Seleccionar</string>
+
+    <string name="id_cliente_item">ID Cliente</string>
+    <string name="uid_cliente">UID Cliente</string>
+
+</resources>
