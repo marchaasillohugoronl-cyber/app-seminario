@@ -35,7 +35,6 @@ public class AgregarClienteActivity extends PantallaActivity {
     private Button btnGuardarCliente;
 
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference clientesRef;
     private DatabaseReference usuariosRef;
 
     @Override
@@ -44,7 +43,7 @@ public class AgregarClienteActivity extends PantallaActivity {
 
         mostrarPantalla(R.layout.activity_agregar_cliente);
 
-        // Referencias de los campos
+        // Inicializar elementos
         tvNombreUsuario = findViewById(R.id.tvNombreUsuario);
 
         etnombrecli = findViewById(R.id.etnombrecli);
@@ -59,13 +58,10 @@ public class AgregarClienteActivity extends PantallaActivity {
         // Firebase
         firebaseAuth = FirebaseAuth.getInstance();
 
-        clientesRef = FirebaseDatabase.getInstance()
-                .getReference("clientes");
-
         usuariosRef = FirebaseDatabase.getInstance()
                 .getReference(UserProfile.PATH);
 
-        // Cargar nombre real del usuario
+        // Cargar nombre del usuario
         cargarNombreUsuario();
 
         // Guardar cliente
@@ -79,7 +75,11 @@ public class AgregarClienteActivity extends PantallaActivity {
         FirebaseUser usuario = firebaseAuth.getCurrentUser();
 
         if (usuario == null) {
-            tvNombreUsuario.setText("Usuario no autenticado");
+
+            tvNombreUsuario.setText(
+                    "Usuario no autenticado"
+            );
+
             return;
         }
 
@@ -154,27 +154,46 @@ public class AgregarClienteActivity extends PantallaActivity {
                 );
     }
 
+    // =========================================================
+    // GUARDAR CLIENTE
+    // =========================================================
+
     private void guardarCliente() {
 
         String nombres =
-                etnombrecli.getText().toString().trim();
+                etnombrecli.getText()
+                        .toString()
+                        .trim();
 
         String apellidos =
-                etapellidoscli.getText().toString().trim();
+                etapellidoscli.getText()
+                        .toString()
+                        .trim();
 
         String dni =
-                etdnicli.getText().toString().trim();
+                etdnicli.getText()
+                        .toString()
+                        .trim();
 
         String correo =
-                etcorreocli.getText().toString().trim();
+                etcorreocli.getText()
+                        .toString()
+                        .trim();
 
         String telefono =
-                ettelefonocli.getText().toString().trim();
+                ettelefonocli.getText()
+                        .toString()
+                        .trim();
 
         String direccion =
-                etdireccioncli.getText().toString().trim();
+                etdireccioncli.getText()
+                        .toString()
+                        .trim();
 
-        // Validaciones
+        // =====================================================
+        // VALIDACIONES
+        // =====================================================
+
         if (TextUtils.isEmpty(nombres)) {
 
             etnombrecli.setError(
@@ -245,7 +264,10 @@ public class AgregarClienteActivity extends PantallaActivity {
             return;
         }
 
-        // Usuario autenticado
+        // =====================================================
+        // USUARIO AUTENTICADO
+        // =====================================================
+
         FirebaseUser usuario =
                 firebaseAuth.getCurrentUser();
 
@@ -262,7 +284,22 @@ public class AgregarClienteActivity extends PantallaActivity {
 
         String uid = usuario.getUid();
 
-        // Crear ID Firebase
+        // =====================================================
+        // REFERENCIA A:
+        //
+        // usuarios/{uid}/clientes
+        // =====================================================
+
+        DatabaseReference clientesRef =
+                FirebaseDatabase.getInstance()
+                        .getReference("usuarios")
+                        .child(uid)
+                        .child("clientes");
+
+        // =====================================================
+        // GENERAR ID
+        // =====================================================
+
         String key = clientesRef.push().getKey();
 
         if (key == null) {
@@ -276,13 +313,19 @@ public class AgregarClienteActivity extends PantallaActivity {
             return;
         }
 
-        // ID visible del cliente
+        // =====================================================
+        // ID VISIBLE DEL CLIENTE
+        // =====================================================
+
         String idCliente =
                 "CLI-" + key.substring(
                         Math.max(0, key.length() - 6)
                 );
 
-        // Crear objeto Cliente
+        // =====================================================
+        // CREAR CLIENTE
+        // =====================================================
+
         Cliente cliente =
                 new Cliente(
                         idCliente,
@@ -295,9 +338,14 @@ public class AgregarClienteActivity extends PantallaActivity {
                         uid
                 );
 
-        // Guardar en Firebase
+        // =====================================================
+        // GUARDAR EN:
+        //
+        // usuarios/{uid}/clientes/{idCliente}
+        // =====================================================
+
         clientesRef
-                .child(key)
+                .child(idCliente)
                 .setValue(cliente)
                 .addOnSuccessListener(unused -> {
 
@@ -319,5 +367,4 @@ public class AgregarClienteActivity extends PantallaActivity {
                     ).show();
                 });
     }
-
 }

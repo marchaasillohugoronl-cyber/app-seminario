@@ -28,17 +28,13 @@ import java.util.List;
 
 public class ListaClienteActivity extends PantallaActivity {
 
+    private FloatingActionButton btnagregarcliente;
     private RecyclerView rvClientes;
 
-    private FloatingActionButton btnagregarcliente;
-
     private AdapterCliente adapterCliente;
-
     private List<Cliente> listaClientes;
 
     private FirebaseAuth firebaseAuth;
-
-    private DatabaseReference clientesRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,37 +44,26 @@ public class ListaClienteActivity extends PantallaActivity {
         mostrarPantalla(R.layout.activity_lista_cliente);
 
         // ==========================================
-        // AJUSTAR PANTALLA
+        // REFERENCIAS DE LA PANTALLA
         // ==========================================
 
-        // ==========================================
-        // REFERENCIAS
-        // ==========================================
+        rvClientes = findViewById(R.id.rvClientes);
 
-        rvClientes =
-                findViewById(R.id.rvClientes);
-
-        btnagregarcliente =
-                findViewById(R.id.btnAgregarCliente);
+        btnagregarcliente = findViewById(
+                R.id.btnAgregarCliente
+        );
 
         // ==========================================
-        // FIREBASE
+        // FIREBASE AUTH
         // ==========================================
 
-        firebaseAuth =
-                FirebaseAuth.getInstance();
-
-        clientesRef =
-                FirebaseDatabase
-                        .getInstance()
-                        .getReference("clientes");
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // ==========================================
-        // LISTA
+        // LISTA DE CLIENTES
         // ==========================================
 
-        listaClientes =
-                new ArrayList<>();
+        listaClientes = new ArrayList<>();
 
         // ==========================================
         // RECYCLERVIEW
@@ -88,8 +73,9 @@ public class ListaClienteActivity extends PantallaActivity {
                 new LinearLayoutManager(this)
         );
 
-        adapterCliente =
-                new AdapterCliente(listaClientes);
+        adapterCliente = new AdapterCliente(
+                listaClientes
+        );
 
         rvClientes.setAdapter(
                 adapterCliente
@@ -102,17 +88,16 @@ public class ListaClienteActivity extends PantallaActivity {
         cargarClientes();
 
         // ==========================================
-        // BOTÓN AGREGAR
+        // BOTÓN AGREGAR CLIENTE
         // ==========================================
 
         btnagregarcliente.setOnClickListener(
                 view -> {
 
-                    Intent intent =
-                            new Intent(
-                                    ListaClienteActivity.this,
-                                    AgregarClienteActivity.class
-                            );
+                    Intent intent = new Intent(
+                            ListaClienteActivity.this,
+                            AgregarClienteActivity.class
+                    );
 
                     startActivity(intent);
                 }
@@ -120,10 +105,14 @@ public class ListaClienteActivity extends PantallaActivity {
     }
 
     // ==========================================
-    // CARGAR CLIENTES DESDE FIREBASE
+    // CARGAR CLIENTES DEL USUARIO ACTUAL
     // ==========================================
 
     private void cargarClientes() {
+
+        // ==========================================
+        // OBTENER USUARIO AUTENTICADO
+        // ==========================================
 
         FirebaseUser usuario =
                 firebaseAuth.getCurrentUser();
@@ -139,64 +128,117 @@ public class ListaClienteActivity extends PantallaActivity {
             return;
         }
 
-        String uid =
-                usuario.getUid();
+        // ==========================================
+        // OBTENER UID
+        // ==========================================
 
-        clientesRef
-                .addValueEventListener(
-                        new ValueEventListener() {
+        String uid = usuario.getUid();
 
-                            @Override
-                            public void onDataChange(
-                                    @NonNull DataSnapshot snapshot) {
+        // ==========================================
+        // REFERENCIA:
+        //
+        // usuarios/{uid}/clientes
+        // ==========================================
 
-                                listaClientes.clear();
+        DatabaseReference misClientesRef =
+                FirebaseDatabase.getInstance()
+                        .getReference("usuarios")
+                        .child(uid)
+                        .child("clientes");
 
-                                for (
-                                        DataSnapshot dataSnapshot :
-                                        snapshot.getChildren()
-                                ) {
+        // ==========================================
+        // LEER CLIENTES
+        // ==========================================
 
-                                    Cliente cliente =
-                                            dataSnapshot.getValue(
-                                                    Cliente.class
-                                            );
+        misClientesRef.addValueEventListener(
+                new ValueEventListener() {
 
-                                    if (cliente != null) {
+                    @Override
+                    public void onDataChange(
+                            @NonNull DataSnapshot snapshot) {
 
-                                        /*
-                                         * Solo mostramos los clientes
-                                         * registrados por el usuario
-                                         * que inició sesión.
-                                         */
-                                        if (
-                                                uid.equals(
-                                                        cliente.getUid_cliente()
-                                                )
-                                        ) {
+                        // Limpiar lista anterior
+                        listaClientes.clear();
 
-                                            listaClientes.add(
-                                                    cliente
-                                            );
-                                        }
-                                    }
+                        // ==========================================
+                        // RECORRER CLIENTES
+                        // ==========================================
+
+                        for (DataSnapshot dataSnapshot :
+                                snapshot.getChildren()) {
+
+                            try {
+
+                                Cliente cliente =
+                                        dataSnapshot.getValue(
+                                                Cliente.class
+                                        );
+
+                                if (cliente != null) {
+
+                                    listaClientes.add(
+                                            cliente
+                                    );
                                 }
 
-                                adapterCliente.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(
-                                    @NonNull DatabaseError error) {
+                            } catch (Exception e) {
 
                                 Toast.makeText(
                                         ListaClienteActivity.this,
-                                        "Error al cargar clientes: "
-                                                + error.getMessage(),
-                                        Toast.LENGTH_LONG
+                                        "Error con un cliente: "
+                                                + e.getMessage(),
+                                        Toast.LENGTH_SHORT
                                 ).show();
                             }
                         }
-                );
+
+                        // ==========================================
+                        // ACTUALIZAR RECYCLERVIEW
+                        // ==========================================
+
+                        adapterCliente.notifyDataSetChanged();
+
+                        // ==========================================
+                        // MENSAJE SI NO HAY CLIENTES
+                        // ==========================================
+
+                        if (listaClientes.isEmpty()) {
+
+                            Toast.makeText(
+                                    ListaClienteActivity.this,
+                                    "No tienes clientes registrados",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(
+                            @NonNull DatabaseError error) {
+
+                        Toast.makeText(
+                                ListaClienteActivity.this,
+                                "Error al cargar clientes: "
+                                        + error.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                }
+        );
+    }
+
+    // ==========================================
+    // ACTUALIZAR CLIENTES AL VOLVER A LA PANTALLA
+    // ==========================================
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+        // Volvemos a cargar los clientes
+        // cuando regresamos de AgregarClienteActivity
+
+        cargarClientes();
     }
 }
