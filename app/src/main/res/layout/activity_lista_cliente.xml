@@ -29,7 +29,7 @@
             android:textSize="26sp"
             android:textStyle="bold" />
 
-        <!-- LISTA DE CLIENTES EN 2 COLUMNAS -->
+        <!-- LISTA DE CLIENTESCOLUMNAS -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvClientes"
             android:layout_width="match_parent"

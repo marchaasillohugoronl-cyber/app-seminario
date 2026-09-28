@@ -43,9 +43,7 @@ public class ListaClienteActivity extends PantallaActivity {
 
         mostrarPantalla(R.layout.activity_lista_cliente);
 
-        // ==========================================
         // REFERENCIAS DE LA PANTALLA
-        // ==========================================
 
         rvClientes = findViewById(R.id.rvClientes);
 
@@ -53,29 +51,20 @@ public class ListaClienteActivity extends PantallaActivity {
                 R.id.btnAgregarCliente
         );
 
-        // ==========================================
         // FIREBASE AUTH
-        // ==========================================
-
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // ==========================================
         // LISTA DE CLIENTES
-        // ==========================================
 
         listaClientes = new ArrayList<>();
 
-        // ==========================================
         // RECYCLERVIEW - 2 COLUMNAS
-        // ==========================================
 
         rvClientes.setLayoutManager(
                 new GridLayoutManager(this, 2)
         );
 
-        // ==========================================
         // ADAPTER
-        // ==========================================
 
         adapterCliente = new AdapterCliente(
                 listaClientes
@@ -84,16 +73,10 @@ public class ListaClienteActivity extends PantallaActivity {
         rvClientes.setAdapter(
                 adapterCliente
         );
-
-        // ==========================================
         // CARGAR CLIENTES
-        // ==========================================
-
         cargarClientes();
 
-        // ==========================================
         // BOTÓN AGREGAR CLIENTE
-        // ==========================================
 
         btnagregarcliente.setOnClickListener(
                 view -> {
@@ -157,22 +140,12 @@ public class ListaClienteActivity extends PantallaActivity {
                     @Override
                     public void onDataChange(
                             @NonNull DataSnapshot snapshot) {
-
-                        // ==========================================
                         // LIMPIAR LISTA ANTERIOR
-                        // ==========================================
-
                         listaClientes.clear();
-
-                        // ==========================================
                         // RECORRER CLIENTES
-                        // ==========================================
-
                         for (DataSnapshot dataSnapshot :
                                 snapshot.getChildren()) {
-
                             try {
-
                                 Cliente cliente =
                                         dataSnapshot.getValue(
                                                 Cliente.class
