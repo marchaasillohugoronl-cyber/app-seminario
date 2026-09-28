@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,12 +66,16 @@ public class ListaClienteActivity extends PantallaActivity {
         listaClientes = new ArrayList<>();
 
         // ==========================================
-        // RECYCLERVIEW
+        // RECYCLERVIEW - 2 COLUMNAS
         // ==========================================
 
         rvClientes.setLayoutManager(
-                new LinearLayoutManager(this)
+                new GridLayoutManager(this, 2)
         );
+
+        // ==========================================
+        // ADAPTER
+        // ==========================================
 
         adapterCliente = new AdapterCliente(
                 listaClientes
@@ -105,14 +109,12 @@ public class ListaClienteActivity extends PantallaActivity {
     }
 
     // ==========================================
-    // CARGAR CLIENTES DEL USUARIO ACTUAL
+    // LISTAR CLIENTES DEL USUARIO ACTUAL
     // ==========================================
 
     private void cargarClientes() {
 
-        // ==========================================
         // OBTENER USUARIO AUTENTICADO
-        // ==========================================
 
         FirebaseUser usuario =
                 firebaseAuth.getCurrentUser();
@@ -136,7 +138,6 @@ public class ListaClienteActivity extends PantallaActivity {
 
         // ==========================================
         // REFERENCIA:
-        //
         // usuarios/{uid}/clientes
         // ==========================================
 
@@ -157,7 +158,10 @@ public class ListaClienteActivity extends PantallaActivity {
                     public void onDataChange(
                             @NonNull DataSnapshot snapshot) {
 
-                        // Limpiar lista anterior
+                        // ==========================================
+                        // LIMPIAR LISTA ANTERIOR
+                        // ==========================================
+
                         listaClientes.clear();
 
                         // ==========================================
@@ -228,7 +232,7 @@ public class ListaClienteActivity extends PantallaActivity {
     }
 
     // ==========================================
-    // ACTUALIZAR CLIENTES AL VOLVER A LA PANTALLA
+    // ACTUALIZAR CLIENTES AL VOLVER
     // ==========================================
 
     @Override
