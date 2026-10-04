@@ -1,8 +1,6 @@
 package com.jeisson.proyectomovil.Clientes;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,7 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.jeisson.proyectomovil.ui.AvisoDialog;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -705,12 +703,9 @@ public class AgregarClienteActivity extends PantallaActivity {
                 .addOnFailureListener(
                         e -> {
 
-                            Toast.makeText(
-                                    AgregarClienteActivity.this,
-                                    "Error al guardar: "
-                                            + e.getMessage(),
-                                    Toast.LENGTH_LONG
-                            ).show();
+                            AvisoDialog.mostrar(this, "No se pudo guardar",
+                                    "Revisa tu conexión e inténtalo de nuevo.",
+                                    R.drawable.ic_aviso_error, null);
                         }
                 );
     }
@@ -722,83 +717,10 @@ public class AgregarClienteActivity extends PantallaActivity {
     private void mostrarAvisoGuardado(
             String nombreCliente) {
 
-        AlertDialog.Builder builder =
-                new AlertDialog.Builder(this);
-
-        // =====================================================
-        // TÍTULO
-        // =====================================================
-
-        if (esModoEdicion) {
-
-            builder.setTitle(
-                    "Cliente actualizado"
-            );
-
-        } else {
-
-            builder.setTitle(
-                    "Cliente guardado"
-            );
-        }
-
-        // =====================================================
-        // MENSAJE
-        // =====================================================
-
-        if (esModoEdicion) {
-
-            builder.setMessage(
-                    "Los datos de "
-                            + nombreCliente
-                            + " se actualizaron correctamente.\n\n"
-
-            );
-
-        } else {
-
-            builder.setMessage(
-                    "¡Hola! Los datos de "
-                            + nombreCliente
-                            + " se guardaron correctamente.\n\n"
-
-            );
-        }
-
-        // =====================================================
-        // NO CERRAR TOCANDO AFUERA
-        // =====================================================
-
-        builder.setCancelable(false);
-
-        // =====================================================
-        // CREAR ALERT
-        // =====================================================
-
-        final AlertDialog alerta =
-                builder.create();
-
-        alerta.show();
-
-        // =====================================================
-        // CERRAR DESPUÉS DE 3 SEGUNDOS
-        // =====================================================
-
-        new Handler(
-                Looper.getMainLooper()
-        ).postDelayed(
-                () -> {
-
-                    if (alerta.isShowing()) {
-
-                        alerta.dismiss();
-                    }
-
-                    // Regresar a ListaClienteActivity
-                    finish();
-
-                },
-                3000
-        );
+        AvisoDialog.mostrar(this,
+                esModoEdicion ? "Cliente actualizado" : "Cliente guardado",
+                "Los datos de " + nombreCliente + (esModoEdicion
+                        ? " se actualizaron correctamente." : " se guardaron correctamente."),
+                R.drawable.ic_aviso_exito, this::finish);
     }
 }

@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import com.jeisson.proyectomovil.ui.AvisoDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -446,57 +446,11 @@ public class ListaClienteActivity extends PantallaActivity {
                                 + apellidos
                 ).trim();
 
-        String[] opciones = {
-                "Modificar",
-                "Eliminar"
-        };
-
-        AlertDialog.Builder builder =
-                new AlertDialog.Builder(this);
-
-        builder.setTitle(
-                "Opciones para "
-                        + nombreCompleto
-        );
-
-        builder.setItems(
-                opciones,
-                (dialog, which) -> {
-
-                    // =================================================
-                    // MODIFICAR
-                    // =================================================
-
-                    if (which == 0) {
-
-                        Intent intent =
-                                new Intent(
-                                        ListaClienteActivity.this,
-                                        AgregarClienteActivity.class
-                                );
-
-                        intent.putExtra(
-                                "id_cliente",
-                                cliente.getId_cliente()
-                        );
-
-                        startActivity(intent);
-                    }
-
-                    // =================================================
-                    // ELIMINAR
-                    // =================================================
-
-                    else if (which == 1) {
-
-                        confirmarEliminar(
-                                cliente
-                        );
-                    }
-                }
-        );
-
-        builder.show();
+        AvisoDialog.opcionesCliente(this, nombreCompleto, () -> {
+            Intent intent = new Intent(this, AgregarClienteActivity.class);
+            intent.putExtra("id_cliente", cliente.getId_cliente());
+            startActivity(intent);
+        }, () -> confirmarEliminar(cliente));
     }
 
     // =========================================================
@@ -523,34 +477,8 @@ public class ListaClienteActivity extends PantallaActivity {
                                 + apellidos
                 ).trim();
 
-        new AlertDialog.Builder(this)
-
-                .setTitle(
-                        "Eliminar cliente"
-                )
-
-                .setMessage(
-                        "¿Estás seguro de eliminar a "
-                                + nombreCompleto
-                                + "?"
-                )
-
-                .setNegativeButton(
-                        "Cancelar",
-                        null
-                )
-
-                .setPositiveButton(
-                        "Eliminar",
-                        (dialog, which) -> {
-
-                            eliminarClienteDeFirebase(
-                                    cliente
-                            );
-                        }
-                )
-
-                .show();
+        AvisoDialog.confirmarEliminacion(this, nombreCompleto,
+                () -> eliminarClienteDeFirebase(cliente));
     }
 
     // =========================================================
@@ -625,11 +553,9 @@ public class ListaClienteActivity extends PantallaActivity {
                 .addOnSuccessListener(
                         unused -> {
 
-                            Toast.makeText(
-                                    ListaClienteActivity.this,
-                                    "Cliente eliminado correctamente",
-                                    Toast.LENGTH_SHORT
-                            ).show();
+                            AvisoDialog.mostrar(this, "Cliente eliminado",
+                                    "El cliente se eliminó correctamente.",
+                                    R.drawable.ic_aviso_eliminar, null);
 
                             // =================================================
                             // ACTUALIZAR LISTA
@@ -641,12 +567,9 @@ public class ListaClienteActivity extends PantallaActivity {
                 .addOnFailureListener(
                         e -> {
 
-                            Toast.makeText(
-                                    ListaClienteActivity.this,
-                                    "Error al eliminar: "
-                                            + e.getMessage(),
-                                    Toast.LENGTH_LONG
-                            ).show();
+                            AvisoDialog.mostrar(this, "No se pudo eliminar",
+                                    "Revisa tu conexión e inténtalo de nuevo.",
+                                    R.drawable.ic_aviso_error, null);
                         }
                 );
     }

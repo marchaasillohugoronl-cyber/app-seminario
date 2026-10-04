@@ -81,4 +81,12 @@
     <string name="id_cliente_item">ID Cliente</string>
     <string name="uid_cliente">UID Cliente</string>
 
+    <string name="aviso_aplicativo">Aviso de aplicativo</string>
+    <string name="aviso_entendido">Entendido</string>
+    <string name="aviso_cancelar">Cancelar</string>
+    <string name="aviso_eliminar">Eliminar cliente</string>
+    <string name="opciones_encabezado">Opciones de cliente</string>
+    <string name="opciones_mensaje">¿Qué deseas hacer con este cliente?</string>
+    <string name="opciones_modificar">Modificar</string>
+    <string name="opciones_eliminar">Eliminar</string>
 </resources>
