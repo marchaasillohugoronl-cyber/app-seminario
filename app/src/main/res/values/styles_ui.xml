@@ -1,0 +1,21 @@
+<resources>
+    <style name="Theme.Seminario.Clear" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/ui_accent</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSurface">@color/ui_ink</item>
+        <item name="android:textColorPrimary">@color/ui_ink</item>
+        <item name="android:textColorSecondary">@color/ui_muted</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="textInputStyle">@style/Widget.Seminario.Input</item>
+    </style>
+    <style name="Widget.Seminario.Input" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxStrokeColor">@color/ui_accent</item>
+        <item name="android:textColorHint">@color/ui_muted</item>
+        <item name="hintTextColor">@color/ui_accent</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+    </style>
+</resources>

@@ -6,17 +6,19 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     android:id="@+id/main"
+    android:theme="@style/Theme.Seminario.Clear"
+    android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back_4"
-    android:padding="20dp"
 
     tools:context=".DashboardActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <!-- =========================
              BIENVENIDA
@@ -24,12 +26,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="175dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -39,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/bienvenido"
                     android:textColor="@color/white"
-                    android:textSize="36sp"
+                    android:textSize="28sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -63,9 +67,8 @@
 
             <ImageView
                 android:id="@+id/img_usuario"
-                android:layout_width="0dp"
-                android:layout_height="150dp"
-                android:layout_weight="1"
+                android:layout_width="104dp"
+                android:layout_height="104dp"
                 android:contentDescription="Imagen de usuario"
                 android:padding="10dp"
                 android:src="@drawable/bienv_1" />
@@ -95,8 +98,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -113,8 +117,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="clientes"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="Clientes"
+                        android:textColor="@color/ui_ink"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -129,8 +133,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -148,7 +153,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/gastos"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/ui_ink"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -177,8 +182,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -196,7 +202,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/tareas"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/ui_ink"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -211,8 +217,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -230,7 +237,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/lista_tareas"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/ui_ink"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -259,8 +266,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -278,7 +286,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/favoritos"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/ui_ink"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -295,8 +303,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp">
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -314,7 +323,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mis_datos"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/ui_ink"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 

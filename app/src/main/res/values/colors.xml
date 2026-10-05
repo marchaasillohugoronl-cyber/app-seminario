@@ -9,4 +9,9 @@
     <color name="gris">#e9e8ec</color>
 
 
+    <color name="ui_ink">#17354A</color>
+    <color name="ui_muted">#526779</color>
+    <color name="ui_accent">#086B86</color>
+    <color name="ui_background">#EDF4F8</color>
+    <color name="ui_border">#8096A6</color>
 </resources>
